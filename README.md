@@ -1,7 +1,8 @@
 # API-Desarrollo-Web
-## Nombres : Cesar Salvador Castro Mata  
-## Dylan Eduardo Escobedo Martínez   
-## Luis Jesus Garcia Almanza
+## Nombres :
+## Cesar Salvador Castro Mata      1794668
+## Dylan Eduardo Escobedo Martínez 1866199
+## Luis Jesus Garcia Almanza       1869209
 
 ## Introducción:
 Una pequeña agencia de viajes operaba y organizaba todo su repertorio de viajes, lista de clientes, hoteles asociados, y todo lo relacionado a ellos mediante su pagina de Facebook, y creando grupos de conversaciones por Messenger, recibía sus pagos mediante transferencias, lo que significaba una causa de desconfianza de parte de los clientes y se traducía a su vez en perdidas de ganancias, por lo que se optó por la utilización de una API que redujera y automatizara todo el trabajo que realizaban ellos mismos, organizando mucho más fácilmente así, su lista de clientes, empleados, viajes, y hoteles asociados, así como la utilización de distintos métodos de pago mas seguros.
