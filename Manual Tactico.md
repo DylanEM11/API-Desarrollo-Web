@@ -104,11 +104,11 @@
 ### }
 
 ### **4)B.- OBTENER RESERVACION**
-###En este apartado podra ver su reservacion con su numero de id de la reservacion 
-###Primero entramos en la carpeta de reservacion y ya despues seleccionamos el apartado **Obtener Reservacion** y pondra su id en el url, presionar el boton de send para ver su reservacion
+### En este apartado podra ver su reservacion con su numero de id de la reservacion 
+### Primero entramos en la carpeta de reservacion y ya despues seleccionamos el apartado **Obtener Reservacion** y pondra su id en el url, presionar el boton de send para ver su reservacion
 
 ### **4)D.- ELIMINAR RESERVACION**
-###En este apartado podra eliminar una reservacion por su id, primero entrara a la carpeta del postman llamada reservacion y seleccionara **Eliminar Reservacion**
-###Ya estando en eliminar reservacion pondra en el url el id de la reservacion que quiere eliminar, para eliminar la reservacion oprima el boton de send y la reservacion sera borrada
+### En este apartado podra eliminar una reservacion por su id, primero entrara a la carpeta del postman llamada reservacion y seleccionara **Eliminar Reservacion**
+### Ya estando en eliminar reservacion pondra en el url el id de la reservacion que quiere eliminar, para eliminar la reservacion oprima el boton de send y la reservacion sera borrada
 
 
