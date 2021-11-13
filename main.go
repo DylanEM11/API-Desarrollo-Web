@@ -43,18 +43,20 @@ type jwtCustomClaims struct {
 	jwt.StandardClaims
 }
 
+/// Seccion LOGIN
+
 func login(c echo.Context) error {
 
 	jt := new(jwtCustomClaims)
 	if err := c.Bind(jt); err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
-	// Throws unauthorized error
+	// Verificacion del usuario
 	if jt.Nombre != "Salvador" || jt.Contraseña != "PIA" {
 		return echo.ErrUnauthorized
 	}
 
-	// Set custom claims
+	// Costumizacion de cliams
 	claims := &jwtCustomClaims{
 		"Salvador Castro",
 		"PIA",
@@ -63,10 +65,10 @@ func login(c echo.Context) error {
 		},
 	}
 
-	// Create token with claims
+	// Crear token con claims
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
-	// Generate encoded token and send it as response.
+	// Genera un token y lo envia
 	t, err := token.SignedString([]byte("gobhgb76/&Jngnghn"))
 	if err != nil {
 		return err
@@ -80,53 +82,70 @@ func login(c echo.Context) error {
 ////// SECCION CLIENTE
 
 func CrearCliente(c echo.Context) error {
+	//Crea un cliente y recibe el json
 	cl := new(clientes)
 	if err := c.Bind(cl); err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
+	/// Conexion a base de datos
 	db, err := ConnectDB()
 	if err != nil {
 		log.Fatal("FALLÓ CONEXIÓN A BDD", err)
 	}
+	// Crea al cliente en la base de datos
 	db.Create(&cl)
 
+	// returna el los datos recibidos
 	return c.JSON(http.StatusOK, cl)
 }
 
 func getCliente(c echo.Context) error {
+	//Traemos la estructura
 	var cl []clientes
+	//Conexion de base de datos
 	db, err := ConnectDB()
 	if err != nil {
 		log.Fatal("FALLÓ CONEXIÓN A BDD", err)
 	}
+	// Encuentra los clientes registrados en la base de datos
 	db.Find(&cl)
+	// Regresa el valor encontrado
 	return c.JSON(http.StatusOK, cl)
 }
 
 func updateCliente(c echo.Context) error {
+	// recibe el id del url
 	id, _ := strconv.Atoi(c.Param("id"))
+	//Conexion de base de datos
 	db, err := ConnectDB()
 	if err != nil {
 		log.Fatal("FALLO CONEXION A BDD")
 	}
+	//Crea un cliente y busca con el id al cliente con la base de datos
 	cl := new(clientes)
 	db.First(&cl, id)
 	if errs := c.Bind(cl); errs != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
+	//Guarda los datos modificados del cliente
 	db.Where("idclientes = ? ", id).Save(&cl)
+	//Regresa el valor
 	return c.JSON(http.StatusOK, cl)
 
 }
 
 func deleteCliente(c echo.Context) error {
+	// recibe el id del url
 	id, _ := strconv.Atoi(c.Param("id"))
+	//Conexion de base de datos
 	db, err := ConnectDB()
 	if err != nil {
 		log.Fatal("FALLO CONEXION A BDD")
 	}
+	//Traemos la estructura
 	var cl clientes
 	var r reservacion
+	// buscamos los clientes y sus reservaciones para eliminarlos
 	db.Where("IDcliente = ?", id).Delete(&r)
 	db.Where("idclientes = ? ", id).Delete(&cl)
 	return c.NoContent(http.StatusNoContent)
@@ -135,53 +154,69 @@ func deleteCliente(c echo.Context) error {
 //////// SECCION VIAJES
 
 func CrearViaje(c echo.Context) error {
+	//Crea un viaje y recibe el json
 	v := new(viaje)
 	if err := c.Bind(v); err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
+	//Conexion de base de datos
 	db, err := ConnectDB()
 	if err != nil {
 		log.Fatal("FALLÓ CONEXIÓN A BDD", err)
 	}
+	//Crea el viaje en la base de datos
 	db.Create(&v)
 
+	//regresamos los datos dados
 	return c.JSON(http.StatusOK, v)
 }
 
 func getViaje(c echo.Context) error {
+	//traemos la estructura
 	var v []viaje
+	//conexion de base de datos
 	db, err := ConnectDB()
 	if err != nil {
 		log.Fatal("FALLÓ CONEXIÓN A BDD", err)
 	}
+	//encontramos los viajes
 	db.Find(&v)
+	//regresamos los datos resultantes
 	return c.JSON(http.StatusOK, v)
 }
 
 func updateViaje(c echo.Context) error {
+	//recibimos el id del url
 	id, _ := strconv.Atoi(c.Param("id"))
+	//conexion a BD
 	db, err := ConnectDB()
 	if err != nil {
 		log.Fatal("FALLO CONEXION A BDD")
 	}
+	//Creamos un nuevo viaje y buscamos por el id en la BD
 	v := new(viaje)
 	db.First(&v, id)
 	if errs := c.Bind(v); errs != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
+	//Salvamos los datos cambiados en la BD
 	db.Where("idviaje = ? ", id).Save(&v)
 	return c.JSON(http.StatusOK, v)
 
 }
 
 func deleteViaje(c echo.Context) error {
+	//recibimos el id del url
 	id, _ := strconv.Atoi(c.Param("id"))
+	//conexion BD
 	db, err := ConnectDB()
 	if err != nil {
 		log.Fatal("FALLO CONEXION A BDD")
 	}
+	//Traemos las estructuras
 	var v viaje
 	var r reservacion
+	// buscamos los viajes y sus reservaciones para eliminarlos
 	db.Where("IDviaje = ?", id).Delete(&r)
 	db.Where("idviaje = ? ", id).Delete(&v)
 	return c.NoContent(http.StatusNoContent)
@@ -190,6 +225,7 @@ func deleteViaje(c echo.Context) error {
 /////// SECCION RESERVACION
 
 func CrearReservacion(c echo.Context) error {
+	//Crea un cliente y recibe el json
 	r := new(reservacion)
 	if err := c.Bind(r); err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
