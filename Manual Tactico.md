@@ -4,10 +4,12 @@
 
 ### Primeramente para poder administrar nuestra agencia de viajes tenemos que logearnos para poder tener acceso a todas las funciones de nuestra agencia de viajes
 ###Entramos en la carpeta admin del postman y seleccionamos el metodo post de login y ingresamos el sig json con sus datos respectivos y le damos en send
+
 ###{
 ###    "Nombre": "Nombre Administrador",
 ###    "Contraseña": "Contraseña Administrador"
 ###}
+
 ###Si no llega ser un admin registrado se dezplegara el mensaje de "unauthorized" lo que quiere decir que no esta autorizado para ingresar y no podra administrar la agencia de viajes
 ###SI es un administrador autorizado le aparecera un token con sus datos y ya podra administrar la agencia 
 
@@ -17,6 +19,7 @@
 ### **2)A.- CREAR CLIENTE**
 ###En este aparatado podra crear un cliente primero entrara a la carpeta del postman llamada cliente y seleccionara **Crear Cliente**
 ###Ya estando en crear cliente ingresara un json como en el ejemplo se muestra y para crearlo le dara en send
+
 ###{
 ###    "Nombre" : "Su nombre",
 ###    "Direccion" : "Su direccion",
@@ -31,6 +34,7 @@
 ### **2)C.- EDITAR CLIENTE**
 ###En este aparatado podra editar un cliente ya creado primero entrara a la carpeta del postman llamada cliente y seleccionara **Editar Cliente**
 ###Ya estando en editar cliente pondra en el url el id del cliente que quiere editar y depues ingresara un json como en el ejemplo se muestra, para guardar los datos le da al send
+
 ###{
 ###    "Nombre" : "Su nombre",
 ###    "Direccion" : "Su direccion",
@@ -49,6 +53,7 @@
 ### **3)A.- CREAR VIAJE**
 ###En este aparatado podra crear un viaje primero entrara a la carpeta del postman llamada viaje y seleccionara **Crear Viaje**
 ###Ya estando en crear viaje ingresara un json como en el ejemplo se muestra y para crearlo le dara en send
+
 ###{
 ###    "Origen" : "Ciudad De Partida",
 ###    "Destino" : "Ciudad De LLegada",
@@ -66,6 +71,7 @@
 ### **3)C.- EDITAR VIAJE**
 ###En este aparatado podra editar un viaje ya creado primero entrara a la carpeta del postman llamada viaje y seleccionara **Editar Viaje**
 ###Ya estando en editar viaje pondra en el url el id del viaje que quiere editar y depues ingresara un json como en el ejemplo se muestra, para guardar los datos le da al send
+
 ###{
 ###    "Origen" : "Ciudad De Partida",
 ###    "Destino" : "Ciudad De LLegada",
@@ -90,6 +96,7 @@
 ###Si el Cliente no esta registrado no podra reservar el viaje 
 ###Si el viaje no esta registrado no podra reservar el viaje 
 ###Si ya no existen espacions en el viaje no podra reservar el viaje
+
 ###{
 ###    "Personas" : Cantidad de personas que reservaran el viaje, (ingresar numero)
 ###    "IDCliente": Id del cliente, (el cliente tendra que estar registrado)
