@@ -4,8 +4,11 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"time"
 
+	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 type clientes struct {
@@ -32,6 +35,46 @@ type viaje struct {
 	Num_Personas  int    `json:"Num_Personas"`
 	Fecha_ida     string `json:"Fecha_ida"`
 	Fecha_regreso string `json:"Fecha_regreso"`
+}
+
+type jwtCustomClaims struct {
+	Nombre     string `json:"Nombre"`
+	Contraseña string `json:"Contraseña"`
+	jwt.StandardClaims
+}
+
+func login(c echo.Context) error {
+
+	jt := new(jwtCustomClaims)
+	if err := c.Bind(jt); err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+	// Throws unauthorized error
+	if jt.Nombre != "Salvador" || jt.Contraseña != "PIA" {
+		return echo.ErrUnauthorized
+	}
+
+	// Set custom claims
+	claims := &jwtCustomClaims{
+		"Salvador Castro",
+		"PIA",
+		jwt.StandardClaims{
+			ExpiresAt: time.Now().Add(time.Hour * 72).Unix(),
+		},
+	}
+
+	// Create token with claims
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
+	// Generate encoded token and send it as response.
+	t, err := token.SignedString([]byte("gobhgb76/&Jngnghn"))
+	if err != nil {
+		return err
+	}
+
+	return c.JSON(http.StatusOK, echo.Map{
+		"token": t,
+	})
 }
 
 ////// SECCION CLIENTE
@@ -83,6 +126,8 @@ func deleteCliente(c echo.Context) error {
 		log.Fatal("FALLO CONEXION A BDD")
 	}
 	var cl clientes
+	var r reservacion
+	db.Where("IDcliente = ?", id).Delete(&r)
 	db.Where("idclientes = ? ", id).Delete(&cl)
 	return c.NoContent(http.StatusNoContent)
 }
@@ -136,7 +181,9 @@ func deleteViaje(c echo.Context) error {
 		log.Fatal("FALLO CONEXION A BDD")
 	}
 	var v viaje
-	db.Where("idviajes = ? ", id).Delete(&v)
+	var r reservacion
+	db.Where("IDviaje = ?", id).Delete(&r)
+	db.Where("idviaje = ? ", id).Delete(&v)
 	return c.NoContent(http.StatusNoContent)
 }
 
@@ -150,6 +197,18 @@ func CrearReservacion(c echo.Context) error {
 	db, err := ConnectDB()
 	if err != nil {
 		log.Fatal("FALLÓ CONEXIÓN A BDD", err)
+	}
+	var cl clientes
+	clien := db.Where("idclientes = ?", r.IDcliente).Find(&cl)
+	if clien.RowsAffected == 0 {
+		return c.JSON(http.StatusBadRequest, "NO EXISTE CLIENTE")
+	}
+	var v viaje
+	via := db.Where("idviaje = ? AND Num_Personas >= ?", r.IDviaje, r.Personas).Find(&v)
+	if via.RowsAffected == 0 {
+		return c.JSON(http.StatusBadRequest, "NO EXISTE VIAJE")
+	} else {
+		db.Model(&v).Where("idviaje = ?", r.IDviaje).Update("Num_Personas", v.Num_Personas-r.Personas)
 	}
 	db.Create(&r)
 
@@ -167,22 +226,6 @@ func getReservacionID(c echo.Context) error {
 	return c.JSON(http.StatusOK, r)
 }
 
-func updateReservacion(c echo.Context) error {
-	id, _ := strconv.Atoi(c.Param("id"))
-	db, err := ConnectDB()
-	if err != nil {
-		log.Fatal("FALLO CONEXION A BDD")
-	}
-	r := new(reservacion)
-	db.First(&r, id)
-	if errs := c.Bind(r); errs != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
-	}
-	db.Where("id_reservacion = ? ", id).Save(&r)
-	return c.JSON(http.StatusOK, r)
-
-}
-
 func deleteReservacion(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
 	db, err := ConnectDB()
@@ -196,8 +239,23 @@ func deleteReservacion(c echo.Context) error {
 
 func main() {
 	e := echo.New()
+	e.Use(middleware.Logger())
+	e.Use(middleware.Recover())
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"http://localhost:4200", "http://localhost:3100"},
+		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
+	}))
 
+	r := e.Group("/restricted")
+
+	config := middleware.JWTConfig{
+		Claims:     &jwtCustomClaims{},
+		SigningKey: []byte("gobhgb76/&Jngnghn"),
+	}
+
+	r.Use(middleware.JWTWithConfig(config))
 	// Crear
+	e.POST("/login", login)
 	e.POST("/Cliente", CrearCliente)
 	e.POST("/Viaje", CrearViaje)
 	e.POST("/Reservacion", CrearReservacion)
@@ -210,7 +268,6 @@ func main() {
 	//Actualizar
 	e.PUT("/Cliente/:id", updateCliente)
 	e.PUT("/Viaje/:id", updateViaje)
-	e.PUT("/Reservacion/:id", updateReservacion)
 
 	// Borrar
 	e.DELETE("Cliente/:id", deleteCliente)
