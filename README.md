@@ -17,26 +17,26 @@ Una pequeña agencia de viajes operaba y organizaba todo su repertorio de viajes
 
 -Cliente:
   IDclientes
-	Nombre     
-	Direccion  
-	Correo     
-	Telefono  
+  Nombre     
+  Direccion  
+  Correo     
+  Telefono  
   
 -Viaje:
   IDviaje     
-	Origen        
-	Destino       
-	Aerolinea     
-	Hotel         
-	Num_Personas  
-	Fecha_ida    
-	Fecha_regreso
+  Origen        
+  Destino       
+  Aerolinea     
+  Hotel         
+  Num_Personas  
+  Fecha_ida    
+  Fecha_regreso
   
- -Reservacion:
+-Reservacion:
   IDReservacion
-	Personas      
-	IDcliente    
-	IDviaje       
+  Personas      
+  IDcliente    
+  IDviaje       
  
 ## •	Funcionalidades:
 Nuestra API contiene una función que no viene dentro de la base de datos, que sería la función de cobro, buscando que sea un método de pago en línea, seguro y eficaz.
