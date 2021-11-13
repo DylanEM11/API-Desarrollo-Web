@@ -44,6 +44,7 @@ Nuestra API contiene una función que no viene dentro de la base de datos, que s
 ## •	Base de datos:
 En nuestra API, decidimos utilizar el MySQL como base de datos, MySQL es un sistema de administración de bases de datos (Database Management System, DBMS) para bases de datos relacionales. Así, MySQL no es más que una aplicación que permite gestionar archivos llamados de bases de datos.
 
-![Diagrama](https://user-images.githubusercontent.com/89227433/130306074-693c8a73-026e-4bab-a3c6-5267220d91e3.PNG)![WhatsApp Image 2021-08-20 at 8 58 14 PM](https://user-images.githubusercontent.com/89227433/130308029-30df696d-fd25-4e57-a415-402c2d17dfca.jpeg)
+![LOL](https://user-images.githubusercontent.com/89227433/141645498-eb3fbcf3-7b62-4ad2-9019-3063155f72a5.PNG)
+
 
 
