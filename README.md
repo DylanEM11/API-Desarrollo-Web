@@ -9,63 +9,34 @@ Una pequeña agencia de viajes operaba y organizaba todo su repertorio de viajes
 
 ## Propuesta técnica:
 ### •	Entidades: 
--Tienda
--Empleado
--Admin
 -Cliente
--Vuelo
--Hotel
--Cuarto
+-Viaje
+-Reservacion
 
 ### •	Atributos:
 
--Tienda:
-  IDTienda
-  Telefono
-  Direccion
-  Correo
-
--Empleado:
- IDEmpleado
- NombreEmpleado
- Telefono
- Direccion
- Correo
- IDTienda
-
--Admin:
- IDAdmin
- IDEmpleado
-
 -Cliente:
- IDCliente
- NombreCliente
- Telefono
- Direccion
- Correo
- IDVuelo
- IDHotel
- IDEmpleado
-
--Vuelo:
- IDVuelo
- NombreAvion
- LugarPartida
- LugarLlegada
- FechaSalida
- NumeroPasajeros
-
--Hotel:
- IDHotel
- NombreHotel
- CiudadHotel
- CapacidadHotel
- IDCuarto
-
--Cuarto:
- IDCuarto
- NumeroCuarto
- PersonasXCuarto
+  IDclientes
+	Nombre     
+	Direccion  
+	Correo     
+	Telefono  
+  
+-Viaje:
+  IDviaje     
+	Origen        
+	Destino       
+	Aerolinea     
+	Hotel         
+	Num_Personas  
+	Fecha_ida    
+	Fecha_regreso
+  
+ -Reservacion:
+  IDReservacion
+	Personas      
+	IDcliente    
+	IDviaje       
  
 ## •	Funcionalidades:
 Nuestra API contiene una función que no viene dentro de la base de datos, que sería la función de cobro, buscando que sea un método de pago en línea, seguro y eficaz.
