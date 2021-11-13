@@ -293,22 +293,22 @@ func main() {
 	// Crear
 	e.POST("/login", login)
 	e.POST("/Cliente", CrearCliente)
-	e.POST("/Viaje", CrearViaje)
-	e.POST("/Reservacion", CrearReservacion)
+	r.POST("/Viaje", CrearViaje)
+	r.POST("/Reservacion", CrearReservacion)
 
 	// Ver
-	e.GET("/Cliente", getCliente)
-	e.GET("/Viaje", getViaje)
-	e.GET("/Reservacion/:id", getReservacionID)
+	r.GET("/Cliente", getCliente)
+	r.GET("/Viaje", getViaje)
+	r.GET("/Reservacion/:id", getReservacionID)
 
 	//Actualizar
-	e.PUT("/Cliente/:id", updateCliente)
-	e.PUT("/Viaje/:id", updateViaje)
+	r.PUT("/Cliente/:id", updateCliente)
+	r.PUT("/Viaje/:id", updateViaje)
 
 	// Borrar
-	e.DELETE("Cliente/:id", deleteCliente)
-	e.DELETE("/Viaje/:id", deleteViaje)
-	e.DELETE("/Reservacion/:id", deleteReservacion)
+	r.DELETE("Cliente/:id", deleteCliente)
+	r.DELETE("/Viaje/:id", deleteViaje)
+	r.DELETE("/Reservacion/:id", deleteReservacion)
 
 	e.Logger.Fatal(e.Start("localhost:1323"))
 }
